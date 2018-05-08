@@ -8,8 +8,11 @@ app.get('/', function(req, res){
 
 io.on('connection', function(socket) {
   console.log("some dushbag just used our socket.");
-  socket.on("disconnect", function() {
-    console.log("He fucking left!");
+  socket.on('chat message', function(msg) {
+    console.log("message: " + msg);
+  })
+  socket.on("disconnect", function(args) {
+    console.log("He fucking left!", args);
   })
 })
 
