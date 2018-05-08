@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Chat with ME!</title>
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -18,17 +18,30 @@
     <script type="text/javascript">
       $(function() {
         var socket = io();
+        var nick = prompt("Enter your nickname please");
+        nick = nick ? nick : "A dushbag";
+        socket.emit('login', {nickname : nick});
+        $('#messages li').first().append(nick + '!');
+
         $('form').submit(function() {
           socket.emit('chat message', $('#m').val());
           $('#m').val('');
           return false;
         });
-        socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
+        socket.on('chat message', function(msgObj){
+          var nickHtml = $("<b>").text(msgObj.userdata.nickname + ": ").html();
+          $('#messages').append($('<li>').html(nickHtml + msgObj.msg));
         });
         socket.on('notification', function(msg){
           var notificationStyle = {
-            color: "red",
+            color: "#49a8ff",
+            background: "#DDD"
+          };
+          $('#messages').append($('<h4>').text(msg).css(notificationStyle));
+        });
+        socket.on('server message', function(msg){
+          var notificationStyle = {
+            color: "blue",
             background: "#DDD"
           };
           $('#messages').append($('<h4>').text(msg).css(notificationStyle));
@@ -37,7 +50,11 @@
     </script>
   </head>
   <body>
-    <ul id="messages"></ul>
+    <ul id="messages">
+      <li style="color: blue; background: #DDD;">
+        Welcome! You can chat with people by using the text box below,
+      </li>
+    </ul>
     <form action="">
       <input id="m" autocomplete="off" /><button>Send</button>
     </form>
