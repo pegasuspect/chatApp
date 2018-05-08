@@ -24,7 +24,10 @@
         $('#messages li').first().append(nick + '!');
 
         $('form').submit(function() {
-          socket.emit('chat message', $('#m').val());
+          var msg = $('#m').val();
+          socket.emit('chat message', msg);
+          var nickHtml = $("<b>").text(nick + ": ").html();
+          $('#messages').append($('<li>').html(nickHtml + msg));
           $('#m').val('');
           return false;
         });
@@ -46,6 +49,7 @@
           };
           $('#messages').append($('<h4>').text(msg).css(notificationStyle));
         });
+        $("#m").focus();
       });
     </script>
   </head>
