@@ -25,7 +25,7 @@ io.on('connection', function(socket) {
     var nick = userdata.nickname;
     io.emit('notification', nick + " connected!");
     socket.handshake.session.save();
-    console.log(socket.handshake);
+    // console.log(socket.handshake);
   });
   // if logout is emitted use:
   // socket.on("logout", function(userdata) {});
@@ -34,16 +34,16 @@ io.on('connection', function(socket) {
   // });
 
   socket.on('notification', function(msg) {
-    io.emit('notification', msg);
+    socket.emit('notification', msg);
   });
 
   socket.on('chat message', function(msg) {
     var userdata = socket.handshake.session.userdata;
-    io.emit('chat message', {userdata, msg});
+    socket.broadcast.emit('chat message', {userdata, msg});
   })
   socket.on('disconnect', function(){
     var nick = socket.handshake.session.userdata.nickname;
-    io.emit('notification', nick + " left!");
+    socket.broadcast.emit('notification', nick + " left!");
     if (socket.handshake.session.userdata) {
       delete socket.handshake.session.userdata;
       socket.handshake.session.save();
