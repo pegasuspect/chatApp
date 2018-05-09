@@ -54,7 +54,11 @@
           };
           $('#messages').append($('<h4>').text(msg).css(notificationStyle));
         });
+
         var typingText = {};
+        var timeoutWaitMS = 2000;
+        var typingPush;
+
         socket.on('typing', function(nick) {
           var nickExists = $("#typing .nicks .nick[id='"+nick+"']").size() == 1;
           if (!nickExists) {
@@ -68,14 +72,16 @@
             typingText[nick] = setTimeout(function(){
               $("#typing").addClass("hide").find(".nicks .nick[id='"+nick+"']").remove();
               typingText[nick] = undefined;
-            }, 5000);
+            }, timeoutWaitMS);
           }
         })
-        var typingPush;
-        $("#m").keydown(function() {
-          if (!typingPush) {
-            socket.emit('typing', nick);
-            typingPush = setTimeout(function(){ typingPush = undefined; }, 5000);
+        $("#m").keydown(function(e) {
+          var c = String.fromCharCode(e.which)
+          if (/[a-zA-Z0-9.!@?#"$%&:';()*\+\/;\-=[\\\]\^_{|}<>` ]/.test(c)) {
+            if (!typingPush) {
+              socket.emit('typing', nick);
+              typingPush = setTimeout(function(){ typingPush = undefined; }, timeoutWaitMS);
+            }
           }
         }).focus();
       });
@@ -92,7 +98,7 @@
         <span class="nicks"></span>
         <span> typing...</span>
       </div>
-      <input id="m" autocomplete="off" /><button>Send</button>
+      <input required id="m" autocomplete="off" /><button>Send</button>
     </form>
   </body>
 </html>
