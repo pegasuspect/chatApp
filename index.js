@@ -37,6 +37,10 @@ io.on('connection', function(socket) {
     socket.emit('notification', msg);
   });
 
+  socket.on('typing', function(nick) {
+    socket.broadcast.emit('typing', nick);
+  })
+
   socket.on('chat message', function(msg) {
     var userdata = socket.handshake.session.userdata;
     socket.broadcast.emit('chat message', {userdata, msg});
