@@ -16,6 +16,9 @@
       #typing { color: #545454; background: white; height: 17px; }
       .hide {display: none;}
       .nick+.nick:before { content: " ," }
+      .circle:before { content: ' \25CF'; }
+      .circle.online { color: green; }
+      .circle.offline { color: red; }
     </style>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -26,7 +29,7 @@
         var nick = prompt("Enter your nickname please");
         nick = nick ? nick : "A dushbag";
         socket.emit('login', {nickname : nick});
-        $('#messages li').first().append(nick + '!');
+        $('#messages li div').first().append(nick + '!');
 
         $('form').submit(function() {
           var msg = $('#m').val();
@@ -52,7 +55,7 @@
             color: "blue",
             background: "#DDD"
           };
-          $('#messages').append($('<h4>').text(msg).css(notificationStyle));
+          $('#messages').append($('<h3>').text(msg).css(notificationStyle));
         });
 
         var typingText = {};
@@ -89,8 +92,10 @@
   </head>
   <body>
     <ul id="messages">
-      <li style="color: blue; background: #DDD;">
-        Welcome! You can chat with people by using the text box below,
+      <li>
+        <div style="color: blue; background: #DDD;">
+          Welcome! You can chat with people by using the text box below,
+        </div>
       </li>
     </ul>
     <form action="">
