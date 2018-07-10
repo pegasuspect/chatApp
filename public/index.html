@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Chat with ME!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap 4 -->
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js" charset="utf-8"></script>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+
+    <!-- Custom -->
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="scripts/script.js" charset="utf-8"></script>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <ul id="messages" class="list-group list-group-flush col">
+                <li class="list-group-item list-group-item-info">
+                    Welcome! You can chat with people by using the text box below,
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="d-sm-none navbar-fill-md"></div>
+    <div class="d-md-none navbar-fill-sm"></div>
+    <nav class="navbar fixed-bottom navbar-light bg-light">
+        <form action="" class="form-inline justify-content-center">
+            <div id="typing" class="blink hide w-100">
+                <span class="nicks"></span>
+                <span> typing...</span>
+            </div>
+            <input id="m" class="form-control col-sm-7 col-lg-3" type="text" required
+            placeholder="Message" aria-label="Message" autocomplete="off">
+            <button class="btn btn-outline-success col-sm-4 offset-sm-1 offset-xl-1 col-lg-1" type="submit">Send</button>
+        </form>
+    </nav>
+</body>
+
+</html>
