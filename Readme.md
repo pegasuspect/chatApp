@@ -1,3 +1,10 @@
+## How to Install
+```shell
+npm install
+cd public
+npm install --prefix . bootstrap
+```
+
 ## Chat Application with Node.JS
 You can follow [this tutorial](https://socket.io/get-started/chat/) to create
 a likewise application.
