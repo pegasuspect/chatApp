@@ -5,6 +5,11 @@ cd public
 npm install --prefix . bootstrap
 ```
 
+## ESLint Your Code
+```shell
+find public/mod/shipment -regex ".*js" -exec node_modules/eslint/bin/eslint.js --fix {} \;
+```
+
 ## Chat Application with Node.JS
 You can follow [this tutorial](https://socket.io/get-started/chat/) to create
 a likewise application.
