@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "description": "Front-End Packages",
   "dependencies": {
-    "bootstrap": "^4"
+    "bootstrap": "^4.1.1"
   }
 }
