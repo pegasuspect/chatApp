@@ -18,17 +18,19 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
-let onlineUsers = new Set();
+let onlineSockets = new Map();
 
 io.on('connection', function(socket) {
   // Accept a login event with user's data
   socket.on("login", function(userdata) {
     socket.handshake.session.userdata = userdata;
     var nick = userdata.nickname;
-    onlineUsers.add(nick);
+
     io.emit('notification', nick + " connected!");
     socket.handshake.session.save();
-    io.emit('onlineUsersChanged', [...onlineUsers]);
+
+    onlineSockets.set(nick, socket);
+    io.emit('onlineUsersChanged', [...onlineSockets.keys()]);
     // console.log(socket.handshake);
   });
   // if logout is emitted use:
@@ -47,13 +49,22 @@ io.on('connection', function(socket) {
 
   socket.on('chat message', function(msg) {
     var userdata = socket.handshake.session.userdata;
+    if(msg.startsWith('@')){
+      var toNick = msg.split` `[0].substring(1);
+      let pmSocket = onlineSockets.get(toNick);
+      pmSocket?.emit('chat message', {userdata, msg, isPM: true});
+      return;
+    }
     socket.broadcast.emit('chat message', {userdata, msg});
   })
   socket.on('disconnect', function(){
     var nick = socket.handshake.session.userdata.nickname;
+
     socket.broadcast.emit('notification', nick + " left!");
-    onlineUsers.delete(nick);
-    socket.broadcast.emit('onlineUsersChanged', [...onlineUsers]);
+
+    onlineSockets.delete(nick);
+    io.emit('onlineUsersChanged', [...onlineSockets.keys()]);
+
     if (socket.handshake.session.userdata) {
       delete socket.handshake.session.userdata;
       socket.handshake.session.save();

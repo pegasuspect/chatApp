@@ -41,8 +41,13 @@
           return false;
         });
         socket.on('chat message', function(msgObj){
-          var nickHtml = $("<b>").text(msgObj.userdata.nickname + ": ").html();
-          $('#messages').append($('<li>').html(nickHtml + msgObj.msg));
+          var pmPrefix = msgObj.isPM ? 'PM ' : '';
+          var nickHtml = $("<b>").text(pmPrefix + msgObj.userdata.nickname + ": ").html();
+          let el = $('<li>').text(nickHtml + msgObj.msg);
+          if (pmPrefix) {
+            el.css('background', 'white').css('color', 'red');
+          }
+          $('#messages').append(el);
         });
         socket.on('notification', function(msg){
           var notificationStyle = {

@@ -9,5 +9,5 @@ So far my progress:
 - [x] Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter.
 - [x] Add “{user} is typing” functionality
 - [x] Show who’s online
-- [ ] Add private messaging
-- [ ] Share your improvements!
+- [X] Add private messaging
+- [X] Share your improvements!
