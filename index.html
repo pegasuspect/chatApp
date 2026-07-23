@@ -16,6 +16,9 @@
       #typing { color: #545454; background: white; height: 17px; }
       .hide {display: none;}
       .nick+.nick:before { content: " ," }
+      #online-users { float: right; background: wheat; padding: 5px 10px;}
+      #online-users ul { list-style-type: none; }
+      #online-users ul li:before{ content: "🟢"; margin: 5px; line-height: 2em; }
     </style>
 
     <script src="/socket.io/socket.io.js"></script>
@@ -23,6 +26,7 @@
     <script type="text/javascript">
       $(function() {
         var socket = io();
+        let onlineUsersUL = $('#online-users ul');
         var nick = prompt("Enter your nickname please");
         nick = nick ? nick : "A dushbag";
         socket.emit('login', {nickname : nick});
@@ -46,6 +50,12 @@
             background: "#DDD"
           };
           $('#messages').append($('<h4>').text(msg).css(notificationStyle));
+        });
+        socket.on('onlineUsersChanged', function(nicknames){
+          onlineUsersUL.empty();
+          for (const nick of nicknames) {
+            onlineUsersUL.append($('<li>').text(nick));
+          }
         });
         socket.on('server message', function(msg){
           var notificationStyle = {
@@ -88,6 +98,10 @@
     </script>
   </head>
   <body>
+    <div id="online-users">
+      <h3>Online Users</h3>
+      <ul></ul>
+    </div>
     <ul id="messages">
       <li style="color: blue; background: #DDD;">
         Welcome! You can chat with people by using the text box below,

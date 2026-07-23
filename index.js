@@ -18,13 +18,17 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
+let onlineUsers = new Set();
+
 io.on('connection', function(socket) {
   // Accept a login event with user's data
   socket.on("login", function(userdata) {
     socket.handshake.session.userdata = userdata;
     var nick = userdata.nickname;
+    onlineUsers.add(nick);
     io.emit('notification', nick + " connected!");
     socket.handshake.session.save();
+    io.emit('onlineUsersChanged', [...onlineUsers]);
     // console.log(socket.handshake);
   });
   // if logout is emitted use:
@@ -48,6 +52,8 @@ io.on('connection', function(socket) {
   socket.on('disconnect', function(){
     var nick = socket.handshake.session.userdata.nickname;
     socket.broadcast.emit('notification', nick + " left!");
+    onlineUsers.delete(nick);
+    socket.broadcast.emit('onlineUsersChanged', [...onlineUsers]);
     if (socket.handshake.session.userdata) {
       delete socket.handshake.session.userdata;
       socket.handshake.session.save();

@@ -8,6 +8,6 @@ So far my progress:
 - [x] Add support for nicknames
 - [x] Don’t send the same message to the user that sent it himself. Instead, append the message directly as soon as he presses enter.
 - [x] Add “{user} is typing” functionality
-- [ ] Show who’s online
+- [x] Show who’s online
 - [ ] Add private messaging
 - [ ] Share your improvements!
