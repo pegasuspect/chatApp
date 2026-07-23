@@ -28,7 +28,7 @@
         var socket = io();
         let onlineUsersUL = $('#online-users ul');
         var nick = prompt("Enter your nickname please");
-        nick = nick ? nick : "A dushbag";
+        nick = nick ? nick : `User-${+new Date()}`;
         socket.emit('login', {nickname : nick});
         $('#messages li').first().append(nick + '!');
 
